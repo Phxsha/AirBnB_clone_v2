@@ -97,3 +97,31 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+
+    def test_init_edge_cases(self):
+        """Test __init__ method with edge cases"""
+        # Test with None as argument
+        with self.assertRaises(TypeError):
+            BaseModel(None)
+
+    def test_save_edge_cases(self):
+        """Test save method with edge cases"""
+        # Test saving with invalid data
+        obj = BaseModel()
+        obj.save()
+        with open("file.json", "r") as file:
+            data = json.load(file)
+        self.assertEqual(len(data), 0)
+
+    def test_to_dict_edge_cases(self):
+        """Test to_dict method with edge cases"""
+        # Test when the object is empty
+        obj = BaseModel()
+        self.assertEqual(obj.to_dict(), {})
+
+    def test_str_edge_cases(self):
+        """Test __str__ method with edge cases"""
+        # Test when the object is empty
+        obj = BaseModel()
+        self.assertEqual(str(obj), "[BaseModel] ({}) {}".format(
+            obj.id, obj.__dict__))
