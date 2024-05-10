@@ -42,12 +42,14 @@ class DBStorage:
             if type(cls) == str:
                 cls = eval(cls)
             objs = {
-                obj.__class__.__name__ + '.' + obj.id: obj for obj in self.__session.query(cls)}
+                obj.__class__.__name__ + '.' + obj.id: obj
+                for obj in self.__session.query(cls)
+            }
         else:
             for cls in classes:
                 objs.update(
-                    {obj.__class__.__name__ + '.' + obj.id: obj for obj in self.__session.query(
-                        cls)})
+                    {obj.__class__.__name__ + '.' + obj.id: obj
+                    for obj in self.__session.query(cls)})
         return objs
 
     def new(self, obj):
