@@ -9,6 +9,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
+
 class DBStorage:
     """A class to manage database storage for hbnb clone"""
 
@@ -23,11 +24,11 @@ class DBStorage:
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                       format(getenv('HBNB_MYSQL_USER'),
-                                              getenv('HBNB_MYSQL_PWD'),
-                                              getenv('HBNB_MYSQL_HOST'),
-                                              getenv('HBNB_MYSQL_DB')),
-                                       pool_pre_ping=True)
+            format(getenv('HBNB_MYSQL_USER'),
+            getenv('HBNB_MYSQL_PWD'),
+            getenv('HBNB_MYSQL_HOST'),
+            getenv('HBNB_MYSQL_DB')),
+            pool_pre_ping=True)
 
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
@@ -40,10 +41,13 @@ class DBStorage:
         if cls:
             if type(cls) == str:
                 cls = eval(cls)
-            objs = {obj.__class__.__name__ + '.' + obj.id: obj for obj in self.__session.query(cls)}
+            objs = {
+                obj.__class__.__name__ + '.' + obj.id: obj for obj in self.__session.query(cls)}
         else:
             for cls in classes:
-                objs.update({obj.__class__.__name__ + '.' + obj.id: obj for obj in self.__session.query(cls)})
+                objs.update(
+                    {obj.__class__.__name__ + '.' + obj.id: obj for obj in self.__session.query(
+                        cls)})
         return objs
 
     def new(self, obj):
@@ -63,6 +67,7 @@ class DBStorage:
     def reload(self):
         """Create all tables and the current database session"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()

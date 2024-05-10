@@ -5,18 +5,20 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship, backref
 import models
 
+
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    
+
     if models.storage_type == 'db':
         cities = relationship("City", cascade="all, delete", backref="state")
     else:
         @property
         def cities(self):
-            """Getter attribute cities that returns the list of City instances with state_id
-               equals to the current State.id"""
+            """Getter attribute cities that returns the list of
+            City instances with state_id
+            equals to the current State.id"""
             from models import storage
             city_list = []
             cities = storage.all(City)
