@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
-from models import base_model
+from models.base_model import Base
 from models.user import User
 from models.state import State
 from models.city import City
@@ -30,7 +30,7 @@ class DBStorage:
                                        pool_pre_ping=True)
 
         if getenv('HBNB_ENV') == 'test':
-            base_model.Base.metadata.drop_all(self.__engine)
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """Query on the current database session"""
@@ -62,7 +62,7 @@ class DBStorage:
 
     def reload(self):
         """Create all tables and the current database session"""
-        base_model.Base.metadata.create_all(self.__engine)
+        Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
