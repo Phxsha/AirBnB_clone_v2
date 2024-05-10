@@ -47,8 +47,8 @@ class DBStorage:
             }
         else:
             for cls in classes:
-                objs.update(
-                    {obj.__class__.__name__ + '.' + obj.id: obj
+                objs.update({
+                    obj.__class__.__name__ + '.' + obj.id: obj
                     for obj in self.__session.query(cls)})
         return objs
 
